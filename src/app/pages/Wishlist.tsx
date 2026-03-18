@@ -7,39 +7,74 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Trash2, ShoppingCart } from 'lucide-react';
 
-// Import all product images (same as ProductDetail.tsx)
-import hero1 from '../../assets/hero/hero1.png';
-import hero2 from '../../assets/hero/hero2.png';
-import hero3 from '../../assets/hero/hero3.png';
+// ✅ CLEAN IMPORTS USING ALIAS
+
+// Hero images
+// Hero images
+import hero1 from '../assets/hero/hero1.png';
+import hero2 from '../assets/hero/hero2.png';
+import hero3 from '../assets/hero/hero3.png';
 
 // Flash sale products
-import gamepadFlash from '../../assets/products/flash/gamepad.png';
-import keyboardFlash from '../../assets/products/flash/keyboard.png';
-import monitorFlash from '../../assets/products/flash/monitor.png';
-import chairFlash from '../../assets/products/flash/chair.png';
-import coolerFlash from '../../assets/products/flash/cooler.png';
+import gamepadFlash from '@/assets/products/flash/gamepad.png';
+import keyboardFlash from '@/assets/products/flash/keyboard.png';
+import monitorFlash from '@/assets/products/flash/monitor.png';
+import chairFlash from '@/assets/products/flash/chair.png'; // ✅ FIXED
+import coolerFlash from '@/assets/products/flash/cooler.png';
 
 // Best selling products
-import coatBest from '../../assets/products/best/coat.png';
-import bagBest from '../../assets/products/best/bag.png';
-import coolerBest from '../../assets/products/best/cooler.png';
-import bookshelfBest from '../../assets/products/best/bookshelf.png';
+import coatBest from '@/assets/products/best/coat.png';
+import bagBest from '@/assets/products/best/bag.png';
+import coolerBest from '@/assets/products/best/cooler.png';
+import bookshelfBest from '@/assets/products/best/bookshelf.png';
 
 // Explore products
-import dogFoodExplore from '../../assets/products/explore/dog-food.png';
-import cameraExplore from '../../assets/products/explore/camera.png';
-import laptopExplore from '../../assets/products/explore/laptop.png';
-import skincareExplore from '../../assets/products/explore/skincare.png';
-import electricCarExplore from '../../assets/products/explore/electric-car.png';
-import cleatsExplore from '../../assets/products/explore/cleats.png';
-import gamepadExplore from '../../assets/products/explore/gamepad.png';
-import jacketExplore from '../../assets/products/explore/jacket.png';
+import dogFoodExplore from '@/assets/products/explore/dog-food.png';
+import cameraExplore from '@/assets/products/explore/camera.png';
+import laptopExplore from '@/assets/products/explore/laptop.png';
+import skincareExplore from '@/assets/products/explore/skincare.png';
+import electricCarExplore from '@/assets/products/explore/electric-car.png';
+import cleatsExplore from '@/assets/products/explore/cleats.png';
+import gamepadExplore from '@/assets/products/explore/gamepad.png';
+import jacketExplore from '@/assets/products/explore/jacket.png';
 
 // New arrival images
-import ps5New from '../../assets/new-arrival/ps5_slim-l.png';
-import womenNew from '../../assets/new-arrival/women-fashion.png';
-import speakersNew from '../../assets/new-arrival/s_speaker.png';
-import perfumeNew from '../../assets/new-arrival/perfume.png';
+import ps5New from '@/assets/new-arrival/ps5_slim-l.png';
+import womenNew from '@/assets/new-arrival/women-fashion.png';
+import speakersNew from '@/assets/new-arrival/s_speaker.png';
+import perfumeNew from '@/assets/new-arrival/perfume.png';
+
+// ✅ IMAGE MAP FIX
+const imageMap = {
+  // Flash
+  gamepadFlash,
+  keyboardFlash,
+  monitorFlash,
+  chairFlash,
+  coolerFlash,
+
+  // Best
+  coatBest,
+  bagBest,
+  coolerBest,
+  bookshelfBest,
+
+  // Explore
+  dogFoodExplore,
+  cameraExplore,
+  laptopExplore,
+  skincareExplore,
+  electricCarExplore,
+  cleatsExplore,
+  gamepadExplore,
+  jacketExplore,
+
+  // New
+  ps5New,
+  womenNew,
+  speakersNew,
+  perfumeNew,
+};
 
 // Define interfaces
 interface Product {
@@ -72,33 +107,33 @@ interface CartItem {
 // Complete product database (same as ProductDetail.tsx)
 const allProducts: Product[] = [
   // Flash Sale Products
-  { id: '1', title: 'HAVIT HV-G92 Gamepad', price: 120, originalPrice: 160, discount: 40, rating: 5, reviews: 88, image: gamepadFlash, inStock: true, category: 'Gaming' },
-  { id: '2', title: 'AK-900 Wired Keyboard', price: 960, originalPrice: 1160, discount: 35, rating: 4, reviews: 75, image: keyboardFlash, inStock: true, category: 'Electronics' },
-  { id: '3', title: 'IPS LCD Gaming Monitor', price: 370, originalPrice: 400, discount: 30, rating: 5, reviews: 99, image: monitorFlash, inStock: true, category: 'Electronics' },
-  { id: '4', title: 'S-Series Comfort Chair', price: 375, originalPrice: 400, discount: 25, rating: 4.5, reviews: 99, image: chairFlash, inStock: true, category: 'Furniture' },
-  { id: '5', title: 'RGB liquid CPU Cooler', price: 160, originalPrice: 170, discount: 25, rating: 4.5, reviews: 65, image: coolerFlash, inStock: true, category: 'Electronics' },
+  { id: '1', title: 'HAVIT HV-G92 Gamepad', price: 120, originalPrice: 160, discount: 40, rating: 5, reviews: 88, image: imageMap.gamepadFlash, inStock: true, category: 'Gaming' },
+  { id: '2', title: 'AK-900 Wired Keyboard', price: 960, originalPrice: 1160, discount: 35, rating: 4, reviews: 75, image: imageMap.keyboardFlash, inStock: true, category: 'Electronics' },
+  { id: '3', title: 'IPS LCD Gaming Monitor', price: 370, originalPrice: 400, discount: 30, rating: 5, reviews: 99, image: imageMap.monitorFlash, inStock: true, category: 'Electronics' },
+  { id: '4', title: 'S-Series Comfort Chair', price: 375, originalPrice: 400, discount: 25, rating: 4.5, reviews: 99, image: imageMap.chairFlash, inStock: true, category: 'Furniture' },
+  { id: '5', title: 'RGB liquid CPU Cooler', price: 160, originalPrice: 170, discount: 25, rating: 4.5, reviews: 65, image: imageMap.coolerFlash, inStock: true, category: 'Electronics' },
   
   // Best Selling Products
-  { id: '6', title: 'The north coat', price: 260, originalPrice: 360, rating: 5, reviews: 65, image: coatBest, inStock: true, category: 'Fashion' },
-  { id: '7', title: 'Gucci duffle bag', price: 960, originalPrice: 1160, rating: 4.5, reviews: 65, image: bagBest, inStock: true, category: 'Fashion' },
-  { id: '8', title: 'RGB liquid CPU Cooler', price: 160, originalPrice: 170, rating: 5, reviews: 65, image: coolerBest, inStock: true, category: 'Electronics' },
-  { id: '9', title: 'Small BookSelf', price: 360, rating: 5, reviews: 65, image: bookshelfBest, inStock: true, category: 'Furniture' },
+  { id: '6', title: 'The north coat', price: 260, originalPrice: 360, rating: 5, reviews: 65, image: imageMap.coatBest, inStock: true, category: 'Fashion' },
+  { id: '7', title: 'Gucci duffle bag', price: 960, originalPrice: 1160, rating: 4.5, reviews: 65, image: imageMap.bagBest, inStock: true, category: 'Fashion' },
+  { id: '8', title: 'RGB liquid CPU Cooler', price: 160, originalPrice: 170, rating: 5, reviews: 65, image: imageMap.coolerBest, inStock: true, category: 'Electronics' },
+  { id: '9', title: 'Small BookSelf', price: 360, rating: 5, reviews: 65, image: imageMap.bookshelfBest, inStock: true, category: 'Furniture' },
   
   // Explore Products
-  { id: '10', title: 'Breed Dry Dog Food', price: 100, rating: 3, reviews: 35, image: dogFoodExplore, inStock: true, category: 'Pets' },
-  { id: '11', title: 'CANON EOS DSLR Camera', price: 360, rating: 4, reviews: 95, image: cameraExplore, inStock: true, category: 'Electronics' },
-  { id: '12', title: 'ASUS FHD Gaming Laptop', price: 700, rating: 5, reviews: 325, image: laptopExplore, inStock: true, category: 'Electronics' },
-  { id: '13', title: 'Curology Product Set', price: 500, rating: 4, reviews: 145, image: skincareExplore, inStock: true, category: 'Beauty' },
-  { id: '14', title: 'Kids Electric Car', price: 960, rating: 5, reviews: 65, isNew: true, image: electricCarExplore, inStock: true, category: 'Toys' },
-  { id: '15', title: 'Jr. Zoom Soccer Cleats', price: 1160, rating: 5, reviews: 35, image: cleatsExplore, inStock: true, category: 'Sports' },
-  { id: '16', title: 'GP11 Shooter USB Gamepad', price: 660, rating: 4.5, reviews: 55, isNew: true, image: gamepadExplore, inStock: true, category: 'Gaming' },
-  { id: '17', title: 'Quilted Satin Jacket', price: 660, rating: 4.5, reviews: 55, image: jacketExplore, inStock: true, category: 'Fashion' },
+  { id: '10', title: 'Breed Dry Dog Food', price: 100, rating: 3, reviews: 35, image: imageMap.dogFoodExplore, inStock: true, category: 'Pets' },
+  { id: '11', title: 'CANON EOS DSLR Camera', price: 360, rating: 4, reviews: 95, image: imageMap.cameraExplore, inStock: true, category: 'Electronics' },
+  { id: '12', title: 'ASUS FHD Gaming Laptop', price: 700, rating: 5, reviews: 325, image: imageMap.laptopExplore, inStock: true, category: 'Electronics' },
+  { id: '13', title: 'Curology Product Set', price: 500, rating: 4, reviews: 145, image: imageMap.skincareExplore, inStock: true, category: 'Beauty' },
+  { id: '14', title: 'Kids Electric Car', price: 960, rating: 5, reviews: 65, isNew: true, image: imageMap.electricCarExplore, inStock: true, category: 'Toys' },
+  { id: '15', title: 'Jr. Zoom Soccer Cleats', price: 1160, rating: 5, reviews: 35, image: imageMap.cleatsExplore, inStock: true, category: 'Sports' },
+  { id: '16', title: 'GP11 Shooter USB Gamepad', price: 660, rating: 4.5, reviews: 55, isNew: true, image: imageMap.gamepadExplore, inStock: true, category: 'Gaming' },
+  { id: '17', title: 'Quilted Satin Jacket', price: 660, rating: 4.5, reviews: 55, image: imageMap.jacketExplore, inStock: true, category: 'Fashion' },
   
   // New Arrival Products
-  { id: '18', title: 'PlayStation 5', price: 499, originalPrice: 599, rating: 5, reviews: 128, image: ps5New, isNew: true, inStock: true, category: 'Gaming' },
-  { id: '19', title: 'Women\'s Collection', price: 199, rating: 4.5, reviews: 89, image: womenNew, isNew: true, inStock: true, category: 'Fashion' },
-  { id: '20', title: 'Speakers', price: 299, rating: 4.5, reviews: 67, image: speakersNew, isNew: true, inStock: true, category: 'Electronics' },
-  { id: '21', title: 'Perfume', price: 89, rating: 4, reviews: 45, image: perfumeNew, isNew: true, inStock: true, category: 'Beauty' },
+  { id: '18', title: 'PlayStation 5', price: 499, originalPrice: 599, rating: 5, reviews: 128, image: imageMap.ps5New, isNew: true, inStock: true, category: 'Gaming' },
+  { id: '19', title: 'Women\'s Collection', price: 199, rating: 4.5, reviews: 89, image: imageMap.womenNew, isNew: true, inStock: true, category: 'Fashion' },
+  { id: '20', title: 'Speakers', price: 299, rating: 4.5, reviews: 67, image: imageMap.speakersNew, isNew: true, inStock: true, category: 'Electronics' },
+  { id: '21', title: 'Perfume', price: 89, rating: 4, reviews: 45, image: imageMap.perfumeNew, isNew: true, inStock: true, category: 'Beauty' },
 ];
 
 // Mock user ID

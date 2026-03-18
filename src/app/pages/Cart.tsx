@@ -7,39 +7,40 @@ import { gradients } from '../utils/gradients';
 import { SectionButton } from '../components/SectionButton';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
-// Import all product images (same as Home.tsx and ProductDetail.tsx)
-import hero1 from '../../assets/hero/hero1.png';
-import hero2 from '../../assets/hero/hero2.png';
-import hero3 from '../../assets/hero/hero3.png';
+// Product image URLs (using placeholder CDN)
+// Hero images
+import hero1 from '../assets/hero/hero1.png';
+import hero2 from '../assets/hero/hero2.png';
+import hero3 from '../assets/hero/hero3.png';
 
 // Flash sale products
-import gamepadFlash from '../../assets/products/flash/gamepad.png';
-import keyboardFlash from '../../assets/products/flash/keyboard.png';
-import monitorFlash from '../../assets/products/flash/monitor.png';
-import chairFlash from '../../assets/products/flash/chair.png';
-import coolerFlash from '../../assets/products/flash/cooler.png';
+import gamepadFlash from '@/assets/products/flash/gamepad.png';
+import keyboardFlash from '@/assets/products/flash/keyboard.png';
+import monitorFlash from '@/assets/products/flash/monitor.png';
+import chairFlash from '@/assets/products/flash/chair.png'; // ✅ FIXED
+import coolerFlash from '@/assets/products/flash/cooler.png';
 
 // Best selling products
-import coatBest from '../../assets/products/best/coat.png';
-import bagBest from '../../assets/products/best/bag.png';
-import coolerBest from '../../assets/products/best/cooler.png';
-import bookshelfBest from '../../assets/products/best/bookshelf.png';
+import coatBest from '@/assets/products/best/coat.png';
+import bagBest from '@/assets/products/best/bag.png';
+import coolerBest from '@/assets/products/best/cooler.png';
+import bookshelfBest from '@/assets/products/best/bookshelf.png';
 
 // Explore products
-import dogFoodExplore from '../../assets/products/explore/dog-food.png';
-import cameraExplore from '../../assets/products/explore/camera.png';
-import laptopExplore from '../../assets/products/explore/laptop.png';
-import skincareExplore from '../../assets/products/explore/skincare.png';
-import electricCarExplore from '../../assets/products/explore/electric-car.png';
-import cleatsExplore from '../../assets/products/explore/cleats.png';
-import gamepadExplore from '../../assets/products/explore/gamepad.png';
-import jacketExplore from '../../assets/products/explore/jacket.png';
+import dogFoodExplore from '@/assets/products/explore/dog-food.png';
+import cameraExplore from '@/assets/products/explore/camera.png';
+import laptopExplore from '@/assets/products/explore/laptop.png';
+import skincareExplore from '@/assets/products/explore/skincare.png';
+import electricCarExplore from '@/assets/products/explore/electric-car.png';
+import cleatsExplore from '@/assets/products/explore/cleats.png';
+import gamepadExplore from '@/assets/products/explore/gamepad.png';
+import jacketExplore from '@/assets/products/explore/jacket.png';
 
 // New arrival images
-import ps5New from '../../assets/new-arrival/ps5_slim-l.png';
-import womenNew from '../../assets/new-arrival/women-fashion.png';
-import speakersNew from '../../assets/new-arrival/s_speaker.png';
-import perfumeNew from '../../assets/new-arrival/perfume.png';
+import ps5New from '@/assets/new-arrival/ps5_slim-l.png';
+import womenNew from '@/assets/new-arrival/women-fashion.png';
+import speakersNew from '@/assets/new-arrival/s_speaker.png';
+import perfumeNew from '@/assets/new-arrival/perfume.png';
 
 // Define CartItem interface
 interface CartItem {
