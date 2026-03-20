@@ -1,5 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
-import { Layout } from "./app/components/Layout";   // ✅ adjusted path
+import { createHashRouter } from "react-router-dom"; // ✅ Changed to HashRouter
+import { Layout } from "./app/components/Layout";
 import { Home } from "./app/pages/Home";
 import { About } from "./app/pages/About";
 import { Contact } from "./app/pages/Contact";
@@ -12,10 +12,10 @@ import { Account } from "./app/pages/Account";
 import { Wishlist } from "./app/pages/Wishlist";
 import { NotFound } from "./app/pages/NotFound";
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: "/",
-    element: <Layout />,   // ✅ FIX
+    element: <Layout />,
     children: [
       { index: true, element: <Home /> },
       { path: "about", element: <About /> },
