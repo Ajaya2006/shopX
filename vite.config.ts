@@ -17,5 +17,5 @@ export default defineConfig({
   },
 
   // 🔥 VERY IMPORTANT for GitHub Pages
-  base: '/', // 👉 replace with your repo name
+  base: '/shopX/', // ✅ Add trailing slash
 })
