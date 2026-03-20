@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "build:github": "vite build --config vite.config.github.ts",
+    "build:vercel": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview:github": "vite preview --config vite.config.github.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
