@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { gradients } from '../utils/gradients';

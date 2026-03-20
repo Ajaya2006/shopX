@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
 import logo from '../../assets/logo.png';

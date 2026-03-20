@@ -1,6 +1,8 @@
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation } from 'react-router-dom';
 import { Search, Heart, ShoppingCart, User, Menu, Moon, Sun, X, ChevronDown } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useCart } from '../contexts/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import logo from '../../assets/logo.png';
@@ -8,6 +10,8 @@ import { gradients } from '../utils/gradients';
 
 export function Header() {
   const { theme, toggleTheme } = useTheme();
+  const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
@@ -27,7 +31,6 @@ export function Header() {
         setCategoryMenuOpen(false);
       }
     }
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -187,14 +190,22 @@ export function Header() {
               </AnimatePresence>
             </motion.button>
 
-            <Link to="/wishlist" className={`p-2 rounded-full ${gradients.glassLight[theme]} transition-all relative group hover:scale-110`}>
+            <Link to="/wishlist" className="relative group hover:scale-110 transition-all">
               <Heart className="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors" />
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">4</span>
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
             </Link>
 
-            <Link to="/cart" className={`p-2 rounded-full ${gradients.glassLight[theme]} transition-all relative group hover:scale-110`}>
+            <Link to="/cart" className="relative group hover:scale-110 transition-all">
               <ShoppingCart className="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors" />
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             {/* Account Menu */}

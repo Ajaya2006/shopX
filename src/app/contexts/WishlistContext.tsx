@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-interface WishlistItem {
+export interface WishlistItem {
   id: string;
   name: string;
   price: number;
-  oldPrice?: number;
+  originalPrice?: number;
   image: string;
-  rating: number;
-  reviews: number;
+  rating?: number;
+  reviews?: number;
 }
 
 interface WishlistContextType {
@@ -15,18 +15,35 @@ interface WishlistContextType {
   addToWishlist: (item: WishlistItem) => void;
   removeFromWishlist: (id: string) => void;
   isInWishlist: (id: string) => boolean;
+  wishlistCount: number;
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
+const WISHLIST_STORAGE_KEY = 'user_wishlist';
+const USER_ID = 'current-user';
+
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
+  useEffect(() => {
+    const stored = localStorage.getItem(`${WISHLIST_STORAGE_KEY}_${USER_ID}`);
+    if (stored) {
+      try {
+        setWishlist(JSON.parse(stored));
+      } catch (error) {
+        console.error('Failed to parse wishlist from localStorage', error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(`${WISHLIST_STORAGE_KEY}_${USER_ID}`, JSON.stringify(wishlist));
+  }, [wishlist]);
+
   const addToWishlist = (item: WishlistItem) => {
     setWishlist(prev => {
-      if (prev.find(i => i.id === item.id)) {
-        return prev;
-      }
+      if (prev.some(i => i.id === item.id)) return prev;
       return [...prev, item];
     });
   };
@@ -35,12 +52,14 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     setWishlist(prev => prev.filter(item => item.id !== id));
   };
 
-  const isInWishlist = (id: string) => {
-    return wishlist.some(item => item.id === id);
-  };
+  const isInWishlist = (id: string) => wishlist.some(item => item.id === id);
+
+  const wishlistCount = wishlist.length;
 
   return (
-    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, isInWishlist }}>
+    <WishlistContext.Provider
+      value={{ wishlist, addToWishlist, removeFromWishlist, isInWishlist, wishlistCount }}
+    >
       {children}
     </WishlistContext.Provider>
   );
@@ -48,8 +67,6 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
 export function useWishlist() {
   const context = useContext(WishlistContext);
-  if (!context) {
-    throw new Error('useWishlist must be used within WishlistProvider');
-  }
+  if (!context) throw new Error('useWishlist must be used within WishlistProvider');
   return context;
 }

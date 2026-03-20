@@ -5,30 +5,24 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ProductCard } from '../components/ProductCard';
 import { SectionButton } from '../components/SectionButton';
 import { useTheme } from '../contexts/ThemeContext';
+import { useCart } from '../contexts/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
 import { gradients } from '../utils/gradients';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
-// ✅ CLEAN IMPORTS USING ALIAS
-
-// Hero images
-import hero1 from '../assets/hero/hero1.png';
-import hero2 from '../assets/hero/hero2.png';
-import hero3 from '../assets/hero/hero3.png';
-
-// Flash sale products
+// Import all product images
+import hero1 from '@/assets/hero/hero1.png';
+import hero2 from '@/assets/hero/hero2.png';
+import hero3 from '@/assets/hero/hero3.png';
 import gamepadFlash from '@/assets/products/flash/gamepad.png';
 import keyboardFlash from '@/assets/products/flash/keyboard.png';
 import monitorFlash from '@/assets/products/flash/monitor.png';
-import chairFlash from '@/assets/products/flash/chair.png'; // ✅ FIXED
+import chairFlash from '@/assets/products/flash/chair.png';
 import coolerFlash from '@/assets/products/flash/cooler.png';
-
-// Best selling products
 import coatBest from '@/assets/products/best/coat.png';
 import bagBest from '@/assets/products/best/bag.png';
 import coolerBest from '@/assets/products/best/cooler.png';
 import bookshelfBest from '@/assets/products/best/bookshelf.png';
-
-// Explore products
 import dogFoodExplore from '@/assets/products/explore/dog-food.png';
 import cameraExplore from '@/assets/products/explore/camera.png';
 import laptopExplore from '@/assets/products/explore/laptop.png';
@@ -37,57 +31,22 @@ import electricCarExplore from '@/assets/products/explore/electric-car.png';
 import cleatsExplore from '@/assets/products/explore/cleats.png';
 import gamepadExplore from '@/assets/products/explore/gamepad.png';
 import jacketExplore from '@/assets/products/explore/jacket.png';
-
-// New arrival images
 import ps5New from '@/assets/new-arrival/ps5_slim-l.png';
 import womenNew from '@/assets/new-arrival/women-fashion.png';
 import speakersNew from '@/assets/new-arrival/s_speaker.png';
 import perfumeNew from '@/assets/new-arrival/perfume.png';
 
-// Define interfaces
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  originalPrice?: number;
-  discount?: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  isNew?: boolean;
-  description?: string;
-  colors?: { name: string; color: string }[];
-  sizes?: string[];
-  inStock?: boolean;
-  category?: string;
-}
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  quantity: number;
-  image: string;
-  inStock?: boolean;
-}
-
-// Complete product database
-const allProducts: Product[] = [
-  // Flash Sale Products
+// Product database
+const allProducts = [
   { id: '1', title: 'HAVIT HV-G92 Gamepad', price: 120, originalPrice: 160, discount: 40, rating: 5, reviews: 88, image: gamepadFlash, description: 'PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.', colors: [{ name: 'red', color: '#EF4444' }, { name: 'blue', color: '#3B82F6' }, { name: 'green', color: '#10B981' }], sizes: ['XS', 'S', 'M', 'L', 'XL'], inStock: true, category: 'Gaming' },
   { id: '2', title: 'AK-900 Wired Keyboard', price: 960, originalPrice: 1160, discount: 35, rating: 4, reviews: 75, image: keyboardFlash, description: 'Mechanical gaming keyboard with RGB backlighting and programmable keys.', colors: [{ name: 'black', color: '#1E1E1E' }, { name: 'white', color: '#FFFFFF' }], sizes: ['Standard'], inStock: true, category: 'Electronics' },
   { id: '3', title: 'IPS LCD Gaming Monitor', price: 370, originalPrice: 400, discount: 30, rating: 5, reviews: 99, image: monitorFlash, description: '27-inch IPS gaming monitor with 144Hz refresh rate and 1ms response time.', colors: [{ name: 'black', color: '#1E1E1E' }], sizes: ['27"'], inStock: true, category: 'Electronics' },
   { id: '4', title: 'S-Series Comfort Chair', price: 375, originalPrice: 400, discount: 25, rating: 4.5, reviews: 99, image: chairFlash, description: 'Ergonomic gaming chair with lumbar support and adjustable armrests.', colors: [{ name: 'black', color: '#1E1E1E' }, { name: 'red', color: '#EF4444' }, { name: 'blue', color: '#3B82F6' }], sizes: ['Standard'], inStock: true, category: 'Furniture' },
   { id: '5', title: 'RGB liquid CPU Cooler', price: 160, originalPrice: 170, discount: 25, rating: 4.5, reviews: 65, image: coolerFlash, description: '240mm liquid CPU cooler with RGB fans for optimal cooling performance.', colors: [{ name: 'black', color: '#1E1E1E' }], sizes: ['240mm'], inStock: true, category: 'Electronics' },
-  
-  // Best Selling Products
   { id: '6', title: 'The north coat', price: 260, originalPrice: 360, rating: 5, reviews: 65, image: coatBest, description: 'Premium winter coat with water-resistant material and warm lining.', colors: [{ name: 'black', color: '#1E1E1E' }, { name: 'brown', color: '#8B4513' }], sizes: ['S', 'M', 'L', 'XL'], inStock: true, category: 'Fashion' },
   { id: '7', title: 'Gucci duffle bag', price: 960, originalPrice: 1160, rating: 4.5, reviews: 65, image: bagBest, description: 'Luxury duffle bag with premium leather and gold-plated hardware.', colors: [{ name: 'brown', color: '#8B4513' }, { name: 'black', color: '#1E1E1E' }], sizes: ['One Size'], inStock: true, category: 'Fashion' },
   { id: '8', title: 'RGB liquid CPU Cooler', price: 160, originalPrice: 170, rating: 5, reviews: 65, image: coolerBest, description: 'High-performance liquid cooler with RGB lighting for gaming PCs.', colors: [{ name: 'black', color: '#1E1E1E' }], sizes: ['240mm'], inStock: true, category: 'Electronics' },
   { id: '9', title: 'Small BookSelf', price: 360, rating: 5, reviews: 65, image: bookshelfBest, description: 'Compact bookshelf perfect for small spaces, made from premium wood.', colors: [{ name: 'oak', color: '#D2B48C' }, { name: 'walnut', color: '#5C4033' }], sizes: ['3-Tier', '4-Tier'], inStock: true, category: 'Furniture' },
-  
-  // Explore Products
   { id: '10', title: 'Breed Dry Dog Food', price: 100, rating: 3, reviews: 35, image: dogFoodExplore, description: 'Premium dry dog food with natural ingredients and essential nutrients.', inStock: true, category: 'Pets' },
   { id: '11', title: 'CANON EOS DSLR Camera', price: 360, rating: 4, reviews: 95, image: cameraExplore, description: 'Professional DSLR camera with 24.1MP sensor and 4K video recording.', colors: [{ name: 'black', color: '#1E1E1E' }], inStock: true, category: 'Electronics' },
   { id: '12', title: 'ASUS FHD Gaming Laptop', price: 700, rating: 5, reviews: 325, image: laptopExplore, description: 'Gaming laptop with RTX 3060, 16GB RAM, and 144Hz display.', colors: [{ name: 'black', color: '#1E1E1E' }], inStock: true, category: 'Electronics' },
@@ -96,47 +55,30 @@ const allProducts: Product[] = [
   { id: '15', title: 'Jr. Zoom Soccer Cleats', price: 1160, rating: 5, reviews: 35, image: cleatsExplore, description: 'Professional soccer cleats for junior players with superior grip.', colors: [{ name: 'black', color: '#1E1E1E' }, { name: 'white', color: '#FFFFFF' }], sizes: ['30', '31', '32', '33', '34'], inStock: true, category: 'Sports' },
   { id: '16', title: 'GP11 Shooter USB Gamepad', price: 660, rating: 4.5, reviews: 55, isNew: true, image: gamepadExplore, description: 'Wired gamepad with programmable buttons and ergonomic design.', colors: [{ name: 'black', color: '#1E1E1E' }], inStock: true, category: 'Gaming' },
   { id: '17', title: 'Quilted Satin Jacket', price: 660, rating: 4.5, reviews: 55, image: jacketExplore, description: 'Stylish quilted satin jacket with lightweight insulation.', colors: [{ name: 'black', color: '#1E1E1E' }, { name: 'navy', color: '#000080' }], sizes: ['S', 'M', 'L', 'XL'], inStock: true, category: 'Fashion' },
-  
-  // New Arrival Products
   { id: '18', title: 'PlayStation 5', price: 499, originalPrice: 599, rating: 5, reviews: 128, image: ps5New, isNew: true, description: 'Next-gen gaming console with lightning-fast loading and immersive gaming.', colors: [{ name: 'white', color: '#FFFFFF' }, { name: 'black', color: '#1E1E1E' }], inStock: true, category: 'Gaming' },
   { id: '19', title: 'Women\'s Collection', price: 199, rating: 4.5, reviews: 89, image: womenNew, isNew: true, description: 'Trendy women\'s fashion collection with modern designs.', colors: [{ name: 'various', color: '#FF69B4' }], sizes: ['XS', 'S', 'M', 'L', 'XL'], inStock: true, category: 'Fashion' },
   { id: '20', title: 'Speakers', price: 299, rating: 4.5, reviews: 67, image: speakersNew, isNew: true, description: 'Premium wireless speakers with crystal clear sound and deep bass.', colors: [{ name: 'black', color: '#1E1E1E' }], inStock: true, category: 'Electronics' },
   { id: '21', title: 'Perfume', price: 89, rating: 4, reviews: 45, image: perfumeNew, isNew: true, description: 'Luxury fragrance with notes of vanilla, musk, and sandalwood.', inStock: true, category: 'Beauty' },
 ];
 
-// Mock user ID
-const USER_ID = 'current-user';
-
-// Local storage keys
-const CART_STORAGE_KEY = 'user_cart';
-const WISHLIST_STORAGE_KEY = 'user_wishlist';
-
 export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedImage, setSelectedImage] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
 
-  // Find the product by ID
   const product = allProducts.find(p => p.id === id);
+  const isWishlisted = product ? isInWishlist(product.id) : false;
 
-  // Check if product is in wishlist on load
   useEffect(() => {
     if (product) {
-      // Check wishlist status
-      const wishlist = localStorage.getItem(`${WISHLIST_STORAGE_KEY}_${USER_ID}`);
-      if (wishlist) {
-        const wishlistIds = JSON.parse(wishlist) as string[];
-        setIsWishlisted(wishlistIds.includes(product.id));
-      }
-
-      // Set default selections
       if (product.colors && product.colors.length > 0) {
         setSelectedColor(product.colors[0].name);
       }
@@ -146,90 +88,56 @@ export function ProductDetail() {
     }
   }, [product]);
 
-  // Generate mock images array
   const images = [
     product?.image || '',
     product?.image || '',
     product?.image || '',
   ];
 
-  // Get related products with safe category handling
-  const getRelatedProducts = (): Product[] => {
+  const getRelatedProducts = () => {
     if (!product) return [];
-    
-    // Use optional chaining and nullish coalescing
     const productCategory = product.category;
-    
     if (productCategory) {
       return allProducts
         .filter(p => p.category === productCategory && p.id !== product.id)
         .slice(0, 4);
     }
-    
-    // If no category, return random products
-    return allProducts
-      .filter(p => p.id !== product.id)
-      .slice(0, 4);
+    return allProducts.filter(p => p.id !== product.id).slice(0, 4);
   };
 
   const relatedProducts = getRelatedProducts();
 
   const handleAddToCart = () => {
     if (!product) return;
-
-    // Get existing cart
-    const existingCart = localStorage.getItem(`${CART_STORAGE_KEY}_${USER_ID}`);
-    let cart: CartItem[] = existingCart ? JSON.parse(existingCart) : [];
-
-    // Check if product already in cart
-    const existingItem = cart.find(item => item.id === product.id);
-
-    if (existingItem) {
-      // Update quantity
-      cart = cart.map(item =>
-        item.id === product.id
-          ? { ...item, quantity: item.quantity + quantity }
-          : item
-      );
-    } else {
-      // Add new item
-      cart.push({
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
         id: product.id,
         name: product.title,
         price: product.price,
         originalPrice: product.originalPrice,
-        quantity: quantity,
         image: product.image,
-        inStock: product.inStock
+        inStock: product.inStock,
       });
     }
-
-    // Save to localStorage
-    localStorage.setItem(`${CART_STORAGE_KEY}_${USER_ID}`, JSON.stringify(cart));
-    
-    // Show success message
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
   const handleToggleWishlist = () => {
     if (!product) return;
-
-    // Get existing wishlist
-    const existingWishlist = localStorage.getItem(`${WISHLIST_STORAGE_KEY}_${USER_ID}`);
-    let wishlist: string[] = existingWishlist ? JSON.parse(existingWishlist) : [];
-
     if (isWishlisted) {
-      // Remove from wishlist
-      wishlist = wishlist.filter(id => id !== product.id);
+      removeFromWishlist(product.id);
     } else {
-      // Add to wishlist
-      wishlist.push(product.id);
+      addToWishlist({
+        id: product.id,
+        name: product.title,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        rating: product.rating,
+        reviews: product.reviews,
+      });
     }
-
-    // Save to localStorage
-    localStorage.setItem(`${WISHLIST_STORAGE_KEY}_${USER_ID}`, JSON.stringify(wishlist));
-    setIsWishlisted(!isWishlisted);
   };
 
   const handleBuyNow = () => {
@@ -257,16 +165,10 @@ export function ProductDetail() {
     );
   }
 
-  // Get the appropriate gradient class based on theme
   const getGradientClass = () => {
-    if (theme === 'light') {
-      return gradients.page.light;
-    } else {
-      return gradients.page.dark;
-    }
+    return theme === 'light' ? gradients.page.light : gradients.page.dark;
   };
 
-  // Safe category display function
   const getCategorySlug = (category: string | undefined): string => {
     return category ? category.toLowerCase() : 'products';
   };
@@ -285,7 +187,6 @@ export function ProductDetail() {
           </button>
           <span className="mx-2">/</span>
           
-          {/* Safely render category with type guard */}
           {product.category && product.category.trim() !== '' && (
             <>
               <button 
